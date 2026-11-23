@@ -29,5 +29,5 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    // no relationships?
+    //no relationships?
 }
