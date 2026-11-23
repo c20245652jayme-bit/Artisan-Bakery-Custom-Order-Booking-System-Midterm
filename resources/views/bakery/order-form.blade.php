@@ -3,439 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arabelle's Bakery</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <meta name="theme-color" content="#fffaf7">
+    <title>Order a custom cake | Arabelle's Bakery</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-
-<body class="bg-[#fff3f5] text-[#59364b]">
-
-    <!-- HEADER -->
-    <header class="bg-gradient-to-r from-pink-500 via-rose-400 to-orange-300 text-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-extrabold">
-                    🍰 Arabelle's Bakery
-                </h1>
-                <p class="text-pink-50 text-sm mt-1">
-                    Sweet Moments, Beautiful Cakes!
-                </p>
-            </div>
-
-            <span class="hidden md:block bg-white/20 px-4 py-2 rounded-full text-sm">
-                Custom Cake Booking
+<body class="min-h-screen bg-[#fffaf7] text-stone-900 antialiased">
+    <header class="border-b border-stone-200/80 bg-white/80">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+            <a href="{{ route('bakery.order.create') }}" class="flex items-center gap-3" aria-label="Arabelle's Bakery home">
+                <span class="flex size-10 items-center justify-center rounded-xl bg-rose-100 text-xl" aria-hidden="true">🍰</span>
+                <span>
+                    <span class="block text-sm font-semibold tracking-tight">Arabelle's Bakery</span>
+                    <span class="block text-xs text-stone-500">Handmade for your celebration</span>
+                </span>
+            </a>
+            <span class="hidden items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 sm:inline-flex">
+                <span class="size-2 rounded-full bg-emerald-500"></span>
+                Custom cake bookings
             </span>
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="bg-gradient-to-r from-yellow-100 via-pink-100 to-purple-100 py-10">
-        <div class="max-w-6xl mx-auto px-6">
-            <p class="text-pink-500 font-bold">WELCOME TO OUR BAKERY ✨</p>
-            <h2 class="text-4xl font-extrabold mt-2">
-                Create Your Dream Cake!
-            </h2>
-            <p class="mt-3 text-gray-600">
-                Customize your cake and make every celebration sweeter.
+    <main class="mx-auto max-w-7xl px-5 pb-16 pt-10 sm:px-8 sm:pt-14">
+        <div class="mx-auto mb-9 max-w-3xl text-center">
+            <span class="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-medium text-rose-700">
+                Made fresh, just for you
+            </span>
+            <h1 class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Let's make it a little sweeter.</h1>
+            <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-stone-500 sm:text-base">
+                Tell us about your celebration and we'll prepare a cake that's made to be remembered.
             </p>
         </div>
-    </section>
 
-    <!-- MAIN -->
-    <main class="max-w-6xl mx-auto p-6">
+        @if(session('success'))
+            <div class="mx-auto mb-6 flex max-w-5xl gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" role="status">
+                <svg class="mt-0.5 size-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
-
-            <!-- ORDER FORM -->
-            <section class="md:col-span-2 bg-white rounded-3xl shadow-xl p-7 border border-pink-100">
-
-                <!-- CONNECTED TO LARAVEL -->
-                <form action="{{ route('bakery.order.store') }}" method="POST">
-
-                    @csrf
-
-                    <!-- SUCCESS MESSAGE -->
-                    @if(session('success'))
-                        <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-5">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <!-- ERROR MESSAGES -->
-                    @if($errors->any())
-                        <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-5">
-                            <strong>Please fix the following errors:</strong>
-
-                            <ul class="list-disc ml-5 mt-2">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <!-- CUSTOMER INFORMATION -->
-                    <div class="mb-6">
-                        <h3 class="text-2xl font-bold text-pink-600">
-                            👤 Customer Information
-                        </h3>
-                        <p class="text-gray-400 text-sm mt-1">
-                            Please enter your personal information.
-                        </p>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-5">
-
-                        <div>
-                            <label class="block font-semibold mb-2">
-                                Customer Name
-                            </label>
-
-                            <input type="text"
-                                name="customer_name"
-                                value="{{ old('customer_name') }}"
-                                placeholder="Enter your name"
-                                required
-                                class="w-full border-2 border-pink-100 rounded-xl p-3 outline-none focus:border-pink-400">
-                        </div>
-
-                        <div>
-                            <label class="block font-semibold mb-2">
-                                Contact Number
-                            </label>
-
-                            <input type="text"
-                                name="contact_phone"
-                                value="{{ old('contact_phone') }}"
-                                placeholder="09XXXXXXXXX"
-                                required
-                                class="w-full border-2 border-pink-100 rounded-xl p-3 outline-none focus:border-pink-400">
-                        </div>
-
-                    </div>
-
-                    <hr class="my-7 border-pink-100">
-
-                    <!-- CAKE DETAILS -->
-                    <h3 class="text-2xl font-bold text-purple-600 mb-2">
-                        🎂 Cake Details
-                    </h3>
-
-                    <p class="text-gray-400 text-sm mb-5">
-                        Choose your favorite cake and customize it.
-                    </p>
-
-                    <div class="mb-5">
-                        <label class="block font-semibold mb-2">
-                            Select Cake Product
-                        </label>
-
-                        <select name="cake_product_id"
-                            id="cake"
-                            required
-                            class="w-full border-2 border-purple-100 rounded-xl p-3 outline-none focus:border-purple-400">
-
-                            <option value="">Choose a cake</option>
-
-                            @foreach($cakes as $cake)
-                                <option
-                                    value="{{ $cake->cake_product_id }}"
-                                    data-price="{{ $cake->base_price }}"
-                                    {{ old('cake_product_id') == $cake->cake_product_id ? 'selected' : '' }}>
-
-                                    {{ $cake->cake_flavor }}
-                                    - {{ $cake->cake_size }}
-                                    (₱{{ number_format($cake->base_price, 2) }})
-
-                                </option>
-                            @endforeach
-
-                        </select>
-                    </div>
-
-                    <div class="mb-5">
-                        <label class="block font-semibold mb-2">
-                            Custom Inscription
-                        </label>
-
-                        <input type="text"
-                            name="custom_inscription"
-                            value="{{ old('custom_inscription') }}"
-                            maxlength="100"
-                            placeholder="Example: Happy Birthday!"
-                            class="w-full border-2 border-purple-100 rounded-xl p-3 outline-none focus:border-purple-400">
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-5">
-
-                        <div>
-                            <label class="block font-semibold mb-2">
-                                Decorations
-                            </label>
-
-                            <select name="add_on_decorations"
-                                class="w-full border-2 border-yellow-200 rounded-xl p-3 outline-none focus:border-yellow-400">
-
-                                <option value="">No decorations</option>
-
-                                <option value="Flowers"
-                                    {{ old('add_on_decorations') == 'Flowers' ? 'selected' : '' }}>
-                                    🌸 Flowers
-                                </option>
-
-                                <option value="Chocolate Drip"
-                                    {{ old('add_on_decorations') == 'Chocolate Drip' ? 'selected' : '' }}>
-                                    🍫 Chocolate Drip
-                                </option>
-
-                                <option value="Fondant Design"
-                                    {{ old('add_on_decorations') == 'Fondant Design' ? 'selected' : '' }}>
-                                    🎀 Fondant Design
-                                </option>
-
-                                <option value="Birthday Topper"
-                                    {{ old('add_on_decorations') == 'Birthday Topper' ? 'selected' : '' }}>
-                                    🎉 Birthday Topper
-                                </option>
-
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-semibold mb-2">
-                                Add-on Price (₱)
-                            </label>
-
-                            <input type="number"
-                                name="add_on_price"
-                                id="addon"
-                                value="{{ old('add_on_price', 0) }}"
-                                min="0"
-                                step="0.01"
-                                class="w-full border-2 border-yellow-200 rounded-xl p-3 outline-none focus:border-yellow-400">
-                        </div>
-
-                    </div>
-
-                    <div class="mt-5">
-                        <label class="block font-semibold mb-2">
-                            📅 Pickup Date and Time
-                        </label>
-
-                        <input type="datetime-local"
-                            name="pickup_datetime"
-                            value="{{ old('pickup_datetime') }}"
-                            required
-                            class="w-full border-2 border-green-100 rounded-xl p-3 outline-none focus:border-green-400">
-                    </div>
-
-                    <hr class="my-7 border-pink-100">
-
-                    <!-- PAYMENT -->
-                    <h3 class="text-2xl font-bold text-green-600 mb-5">
-                        💰 Payment Information
-                    </h3>
-
+        @if($errors->any())
+            <div class="mx-auto mb-6 max-w-5xl rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900" role="alert">
+                <div class="flex gap-3">
+                    <svg class="mt-0.5 size-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
                     <div>
-                        <label class="block font-semibold mb-2">
-                            Total Deposit (₱)
-                        </label>
-
-                        <input type="number"
-                            name="total_deposit"
-                            id="deposit"
-                            value="{{ old('total_deposit', 0) }}"
-                            min="0"
-                            step="0.01"
-                            required
-                            class="w-full border-2 border-green-100 rounded-xl p-3 outline-none focus:border-green-400">
+                        <p class="font-medium">There are a few things to check</p>
+                        <ul class="mt-1 list-inside list-disc text-red-800">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
+                </div>
+            </div>
+        @endif
 
-                    <!-- SUBMIT BUTTON -->
-                    <button type="submit"
-                        class="w-full mt-7 bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-bold p-4 rounded-xl shadow-lg transition hover:scale-[1.01]">
+        <div class="mx-auto grid max-w-5xl items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <form action="{{ route('bakery.order.store') }}" method="POST" class="rounded-xl border border-stone-200 bg-white shadow-sm">
+                @csrf
+                <section class="border-b border-stone-200 p-5 sm:p-7">
+                    <div class="mb-6 flex items-start gap-3">
+                        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-stone-100 text-sm font-semibold text-stone-700">01</span>
+                        <div>
+                            <h2 class="text-base font-semibold tracking-tight">Your details</h2>
+                            <p class="mt-1 text-sm text-stone-500">Who should we prepare this order for?</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div>
+                            <label for="customer_name" class="mb-2 block text-sm font-medium">Full name <span class="text-rose-600">*</span></label>
+                            <input id="customer_name" name="customer_name" type="text" value="{{ old('customer_name') }}" placeholder="e.g. Jamie Santos" autocomplete="name" required maxlength="100" class="form-control">
+                            @error('customer_name') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label for="contact_phone" class="mb-2 block text-sm font-medium">Contact number <span class="text-rose-600">*</span></label>
+                            <input id="contact_phone" name="contact_phone" type="tel" value="{{ old('contact_phone') }}" placeholder="09XX XXX XXXX" autocomplete="tel" required maxlength="20" class="form-control">
+                            @error('contact_phone') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                </section>
 
-                        🍰 Place Custom Order
+                <section class="border-b border-stone-200 p-5 sm:p-7">
+                    <div class="mb-6 flex items-start gap-3">
+                        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-stone-100 text-sm font-semibold text-stone-700">02</span>
+                        <div>
+                            <h2 class="text-base font-semibold tracking-tight">Your cake</h2>
+                            <p class="mt-1 text-sm text-stone-500">Pick a favorite and make it your own.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        <div>
+                            <label for="cake" class="mb-2 block text-sm font-medium">Cake flavor and size <span class="text-rose-600">*</span></label>
+                            <select id="cake" name="cake_product_id" required class="form-control">
+                                <option value="">Choose a cake</option>
+                                @foreach($cakes as $cake)
+                                    <option value="{{ $cake->cake_product_id }}" data-price="{{ $cake->base_price }}" {{ old('cake_product_id') == $cake->cake_product_id ? 'selected' : '' }}>
+                                        {{ $cake->cake_flavor }} · {{ $cake->cake_size }} — ₱{{ number_format($cake->base_price, 2) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if($cakes->isEmpty())
+                                <p class="mt-2 text-xs text-amber-700">Cake options are currently unavailable. Please check back soon.</p>
+                            @endif
+                            @error('cake_product_id') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label for="custom_inscription" class="mb-2 block text-sm font-medium">Cake inscription <span class="font-normal text-stone-400">· optional</span></label>
+                            <input id="custom_inscription" name="custom_inscription" type="text" value="{{ old('custom_inscription') }}" placeholder="e.g. Happy Birthday, Alex!" maxlength="100" class="form-control">
+                            <p class="mt-1.5 text-xs text-stone-500">A short message to make it extra special.</p>
+                        </div>
+                        <div class="grid gap-5 sm:grid-cols-2">
+                            <div>
+                                <label for="add_on_decorations" class="mb-2 block text-sm font-medium">Decorations <span class="font-normal text-stone-400">· optional</span></label>
+                                <select id="add_on_decorations" name="add_on_decorations" class="form-control">
+                                    <option value="">No decorations</option>
+                                    <option value="Flowers" {{ old('add_on_decorations') === 'Flowers' ? 'selected' : '' }}>Fresh flowers</option>
+                                    <option value="Chocolate Drip" {{ old('add_on_decorations') === 'Chocolate Drip' ? 'selected' : '' }}>Chocolate drip</option>
+                                    <option value="Fondant Design" {{ old('add_on_decorations') === 'Fondant Design' ? 'selected' : '' }}>Fondant design</option>
+                                    <option value="Birthday Topper" {{ old('add_on_decorations') === 'Birthday Topper' ? 'selected' : '' }}>Birthday topper</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="addon" class="mb-2 block text-sm font-medium">Decoration price <span class="text-rose-600">*</span></label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-stone-500">₱</span>
+                                    <input id="addon" name="add_on_price" type="number" value="{{ old('add_on_price', 0) }}" min="0" step="0.01" class="form-control pl-8">
+                                </div>
+                                @error('add_on_price') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
+                <section class="p-5 sm:p-7">
+                    <div class="mb-6 flex items-start gap-3">
+                        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-stone-100 text-sm font-semibold text-stone-700">03</span>
+                        <div>
+                            <h2 class="text-base font-semibold tracking-tight">Pickup and payment</h2>
+                            <p class="mt-1 text-sm text-stone-500">Choose when you'll pick up your cake.</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div>
+                            <label for="pickup_datetime" class="mb-2 block text-sm font-medium">Pickup date and time <span class="text-rose-600">*</span></label>
+                            <input id="pickup_datetime" name="pickup_datetime" type="datetime-local" value="{{ old('pickup_datetime') }}" required class="form-control">
+                            @error('pickup_datetime') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label for="payment_method" class="mb-2 block text-sm font-medium">Payment method <span class="text-rose-600">*</span></label>
+                            <select id="payment_method" name="payment_method" required class="form-control">
+                                <option value="">Select a method</option>
+                                <option value="Cash" {{ old('payment_method') === 'Cash' ? 'selected' : '' }}>Cash</option>
+                                <option value="GCash" {{ old('payment_method') === 'GCash' ? 'selected' : '' }}>GCash</option>
+                                <option value="Bank Transfer" {{ old('payment_method') === 'Bank Transfer' ? 'selected' : '' }}>Bank transfer</option>
+                            </select>
+                            @error('payment_method') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="deposit" class="mb-2 block text-sm font-medium">Deposit amount <span class="text-rose-600">*</span></label>
+                            <div class="relative">
+                                <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-stone-500">₱</span>
+                                <input id="deposit" name="total_deposit" type="number" value="{{ old('total_deposit', 0) }}" min="0" step="0.01" required class="form-control pl-8">
+                            </div>
+                            <p class="mt-1.5 text-xs text-stone-500">A deposit of at least 50% is needed to confirm your booking.</p>
+                            @error('total_deposit') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                    <button type="submit" class="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-stone-900 px-4 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-2">
+                        Place your cake order
+                        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                     </button>
+                    <p class="mt-3 text-center text-xs text-stone-500">We'll be in touch to confirm your custom order.</p>
+                </section>
+            </form>
 
-                </form>
-
-            </section>
-
-            <!-- ORDER SUMMARY -->
-            <aside class="bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-3xl shadow-xl p-6 h-fit border border-white">
-
-                <div class="text-center mb-6">
-                    <div class="text-5xl mb-3">🧁</div>
-
-                    <h3 class="text-2xl font-extrabold text-purple-700">
-                        Order Summary
-                    </h3>
-
-                    <p class="text-sm text-purple-500 mt-1">
-                        Your sweet order details
-                    </p>
-                </div>
-
-                <div class="bg-white/80 rounded-2xl p-5 space-y-5">
-
-                    <div class="flex justify-between">
-                        <span>Base Price</span>
-                        <strong id="basePrice">₱0.00</strong>
+            <aside class="lg:sticky lg:top-6">
+                <section class="rounded-xl border border-stone-200 bg-white shadow-sm">
+                    <div class="border-b border-stone-200 p-5">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-base font-semibold tracking-tight">Order summary</h2>
+                            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-600">Estimate</span>
+                        </div>
+                        <p class="mt-1 text-sm text-stone-500">Your celebration, made to order.</p>
                     </div>
-
-                    <div class="flex justify-between">
-                        <span>Add-on Price</span>
-                        <strong id="addonPrice">₱0.00</strong>
+                    <div class="space-y-4 p-5">
+                        <div class="flex justify-between gap-4 text-sm">
+                            <span class="text-stone-500">Cake</span>
+                            <span id="summaryCake" class="text-right font-medium">Not selected</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-stone-500">Cake price</span>
+                            <span id="basePrice" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-stone-500">Decoration</span>
+                            <span id="addonPrice" class="font-medium">₱0.00</span>
+                        </div>
+                        <div class="border-t border-dashed border-stone-200 pt-4">
+                            <div class="flex items-baseline justify-between">
+                                <span class="font-medium">Total</span>
+                                <span id="totalPrice" class="text-xl font-semibold tracking-tight">₱0.00</span>
+                            </div>
+                        </div>
+                        <div class="rounded-lg bg-stone-50 p-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-stone-500">Minimum deposit (50%)</span>
+                                <span id="minimumDeposit" class="font-medium">₱0.00</span>
+                            </div>
+                            <div class="mt-3 flex justify-between text-sm">
+                                <span class="text-stone-500">Your deposit</span>
+                                <span id="depositAmount" class="font-medium">₱0.00</span>
+                            </div>
+                            <div class="mt-3 flex justify-between border-t border-stone-200 pt-3">
+                                <span class="text-sm font-medium">Balance due</span>
+                                <span id="balanceDue" class="text-sm font-semibold">₱0.00</span>
+                            </div>
+                        </div>
+                        <div id="depositMessage" class="rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-xs leading-5 text-stone-600" aria-live="polite">
+                            Choose a cake to see your estimate.
+                        </div>
                     </div>
-
-                    <hr class="border-purple-200">
-
-                    <div class="flex justify-between text-lg font-bold text-purple-700">
-                        <span>Total Price</span>
-                        <span id="totalPrice">₱0.00</span>
-                    </div>
-
-                    <div class="flex justify-between text-sm">
-                        <span>Minimum 50% Deposit</span>
-                        <strong id="minimumDeposit">₱0.00</strong>
-                    </div>
-
-                    <div class="flex justify-between">
-                        <span>Your Deposit</span>
-                        <strong id="depositAmount">₱0.00</strong>
-                    </div>
-
-                    <hr class="border-purple-200">
-
-                    <div class="bg-pink-100 p-4 rounded-xl">
-                        <p class="text-sm text-pink-600 font-semibold">
-                            Remaining Balance
-                        </p>
-
-                        <h2 class="text-3xl font-extrabold text-pink-700 mt-1"
-                            id="balanceDue">
-                            ₱0.00
-                        </h2>
-                    </div>
-
-                    <div id="depositMessage"
-                        class="bg-yellow-100 text-yellow-800 text-sm p-3 rounded-xl">
-
-                        Select a cake to calculate your order.
-
-                    </div>
-
-                </div>
-
-                <p class="text-center text-purple-600 text-sm mt-5 font-medium">
-                    💕 Thank you for choosing our bakery!
+                </section>
+                <p class="mt-4 flex items-center justify-center gap-2 text-xs text-stone-500">
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    Your details are only used for this order.
                 </p>
-
             </aside>
-
         </div>
-
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-gradient-to-r from-purple-700 via-pink-600 to-rose-500 text-white text-center p-7 mt-12">
-
-        <h3 class="text-xl font-bold">🍰 Arabelle's Bakery</h3>
-
-        <p class="text-sm mt-2">
-            Freshly Baked With Love!
-        </p>
-
-        <p class="text-xs mt-3 text-pink-100">
-            © 2026 Arabelle's Bakery. All Rights Reserved.
-        </p>
-
+    <footer class="border-t border-stone-200 bg-white">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-xs text-stone-500 sm:flex-row sm:px-8">
+            <span>© {{ date('Y') }} Arabelle's Bakery</span>
+            <span>Freshly baked with love.</span>
+        </div>
     </footer>
-
-    <!-- CALCULATION -->
-    <script>
-
-        const cake = document.getElementById('cake');
-        const addon = document.getElementById('addon');
-        const deposit = document.getElementById('deposit');
-
-        function calculateTotal() {
-
-            const selectedCake = cake.options[cake.selectedIndex];
-
-            const base = Number(selectedCake.dataset.price || 0);
-            const extra = Number(addon.value || 0);
-            const payment = Number(deposit.value || 0);
-
-            const total = base + extra;
-            const minimum = total * 0.50;
-
-            const balance = total - payment;
-
-            document.getElementById('basePrice').textContent =
-                '₱' + base.toFixed(2);
-
-            document.getElementById('addonPrice').textContent =
-                '₱' + extra.toFixed(2);
-
-            document.getElementById('totalPrice').textContent =
-                '₱' + total.toFixed(2);
-
-            document.getElementById('minimumDeposit').textContent =
-                '₱' + minimum.toFixed(2);
-
-            document.getElementById('depositAmount').textContent =
-                '₱' + payment.toFixed(2);
-
-            document.getElementById('balanceDue').textContent =
-                '₱' + balance.toFixed(2);
-
-            const message = document.getElementById('depositMessage');
-
-            if (total === 0) {
-
-                message.textContent = 'Please select a cake.';
-
-                message.className =
-                    'bg-yellow-100 text-yellow-800 text-sm p-3 rounded-xl';
-
-            } else if (payment > total) {
-
-                message.textContent =
-                    '⚠️ Deposit cannot exceed total price.';
-
-                message.className =
-                    'bg-red-100 text-red-700 text-sm p-3 rounded-xl';
-
-            } else if (payment < minimum) {
-
-                message.textContent =
-                    '⚠️ Minimum 50% deposit required: ₱' +
-                    minimum.toFixed(2);
-
-                message.className =
-                    'bg-red-100 text-red-700 text-sm p-3 rounded-xl';
-
-            } else {
-
-                message.textContent =
-                    '✓ Deposit requirement satisfied!';
-
-                message.className =
-                    'bg-green-100 text-green-700 text-sm p-3 rounded-xl';
-
-            }
-        }
-
-        cake.addEventListener('change', calculateTotal);
-        addon.addEventListener('input', calculateTotal);
-        deposit.addEventListener('input', calculateTotal);
-
-        calculateTotal();
-
-    </script>
-
 </body>
 </html>

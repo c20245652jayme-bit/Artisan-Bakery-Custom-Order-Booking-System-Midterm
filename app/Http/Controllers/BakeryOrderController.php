@@ -34,6 +34,7 @@ class BakeryOrderController extends Controller
             'add_on_decorations' => 'nullable|string|max:255',
             'add_on_price' => 'nullable|numeric|min:0',
             'total_deposit' => 'required|numeric|min:0',
+            'payment_method' => 'required|string|max:50',
             'pickup_datetime' => 'required|date|after:now',
         ]);
 

@@ -15,6 +15,9 @@ return new class extends Migration
                 ->unique()
                 ->constrained('bakery_orders', 'order_id');
 
+            $table->decimal('payment_amount', 10, 2);
+            $table->date('payment_date');
+            $table->string('payment_method');
             $table->decimal('total_deposit', 10, 2);
             $table->decimal('balance_due', 10, 2);
             $table->timestamps();
