@@ -43,4 +43,3 @@ class BakeryOrder extends Model
         return $this->hasOne(OrderPayment::class, 'order_id', 'order_id');
     }
 }
-//
