@@ -17,10 +17,15 @@
                     <span class="block text-xs text-stone-500">Handmade for your celebration</span>
                 </span>
             </a>
-            <span class="hidden items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 sm:inline-flex">
-                <span class="size-2 rounded-full bg-emerald-500"></span>
-                Custom cake bookings
-            </span>
+            <nav aria-label="Main navigation" class="flex items-center gap-2">
+                <a href="{{ route('dashboard') }}" class="rounded-lg px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-stone-100 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400">
+                    Dashboard
+                </a>
+                <span class="hidden items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 sm:inline-flex">
+                    <span class="size-2 rounded-full bg-emerald-500"></span>
+                    Custom cake bookings
+                </span>
+            </nav>
         </div>
     </header>
 
