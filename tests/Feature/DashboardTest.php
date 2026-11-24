@@ -5,12 +5,21 @@ namespace Tests\Feature;
 use App\Models\BakeryOrder;
 use App\Models\CakeProduct;
 use App\Models\Customer;
+use App\Services\BakeryOrderService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_bakery_order_service_is_registered_as_a_singleton(): void
+    {
+        $first = app(BakeryOrderService::class);
+        $second = app(BakeryOrderService::class);
+
+        $this->assertSame($first, $second);
+    }
 
     public function test_dashboard_displays_aggregate_order_stats_without_customer_details(): void
     {
@@ -46,6 +55,10 @@ class DashboardTest extends TestCase
             ->assertViewHas('pendingOrders', 1)
             ->assertViewHas('cakeProducts', 1)
             ->assertSee(route('bakery.order.create'))
+            ->assertSee('Recent orders')
+            ->assertSee('Chocolate · Medium')
+            ->assertSee('pending')
+            ->assertSee('completed')
             ->assertDontSee('Private Customer')
             ->assertDontSee('09123456789');
     }

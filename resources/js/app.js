@@ -13,9 +13,12 @@ if (cake && addon && deposit) {
     const addonPrice = document.getElementById('addonPrice');
     const totalPrice = document.getElementById('totalPrice');
     const minimumDeposit = document.getElementById('minimumDeposit');
-    const depositAmount = document.getElementById('depositAmount');
     const balanceDue = document.getElementById('balanceDue');
     const depositMessage = document.getElementById('depositMessage');
+
+    const setText = (element, value) => {
+        if (element) element.textContent = value;
+    };
 
     function calculateTotal() {
         const selectedCake = cake.options[cake.selectedIndex];
@@ -25,31 +28,37 @@ if (cake && addon && deposit) {
         const total = base + extra;
         const minimum = total * 0.5;
 
-        summaryCake.textContent = selectedCake?.value
+        setText(summaryCake, selectedCake?.value
             ? selectedCake.textContent.trim().split(' — ')[0]
-            : 'Not selected';
-        basePrice.textContent = money.format(base);
-        addonPrice.textContent = money.format(extra);
-        totalPrice.textContent = money.format(total);
-        minimumDeposit.textContent = money.format(minimum);
-        depositAmount.textContent = money.format(payment);
-        balanceDue.textContent = money.format(Math.max(0, total - payment));
+            : 'Not selected');
+        setText(basePrice, money.format(base));
+        setText(addonPrice, money.format(extra));
+        setText(totalPrice, money.format(total));
+        setText(minimumDeposit, money.format(minimum));
+        setText(balanceDue, money.format(Math.max(0, total - payment)));
 
-        depositMessage.className = 'rounded-lg border px-3 py-2.5 text-xs leading-5';
+        if (!depositMessage) return;
+
+        depositMessage.className = 'mt-5 rounded-md border px-3 py-2.5 text-xs';
+
+        let message = 'Choose a cake to see your estimate.';
+        let classes = 'border-zinc-200 bg-zinc-50 text-zinc-600';
 
         if (total === 0) {
-            depositMessage.textContent = 'Choose a cake to see your estimate.';
-            depositMessage.classList.add('border-stone-200', 'bg-white', 'text-stone-600');
+            // Keep the default message and classes.
         } else if (payment > total) {
-            depositMessage.textContent = 'Your deposit cannot be more than the total price.';
-            depositMessage.classList.add('border-red-200', 'bg-red-50', 'text-red-800');
+            message = 'Deposit cannot be more than the total price.';
+            classes = 'border-red-200 bg-red-50 text-red-800';
         } else if (payment < minimum) {
-            depositMessage.textContent = `A deposit of at least ${money.format(minimum)} is needed to book.`;
-            depositMessage.classList.add('border-amber-200', 'bg-amber-50', 'text-amber-900');
+            message = `Minimum deposit: ${money.format(minimum)}.`;
+            classes = 'border-amber-200 bg-amber-50 text-amber-900';
         } else {
-            depositMessage.textContent = 'Your deposit meets the minimum booking amount.';
-            depositMessage.classList.add('border-emerald-200', 'bg-emerald-50', 'text-emerald-800');
+            message = 'Deposit meets the minimum amount.';
+            classes = 'border-emerald-200 bg-emerald-50 text-emerald-800';
         }
+
+        depositMessage.textContent = message;
+        depositMessage.classList.add(...classes.split(' '));
     }
 
     const pickup = document.getElementById('pickup_datetime');

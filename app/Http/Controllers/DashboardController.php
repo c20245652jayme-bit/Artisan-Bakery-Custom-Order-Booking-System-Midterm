@@ -15,6 +15,11 @@ class DashboardController extends Controller
             'ordersToday' => BakeryOrder::query()->whereDate('created_at', today())->count(),
             'pendingOrders' => BakeryOrder::query()->where('order_status', 'pending')->count(),
             'cakeProducts' => CakeProduct::query()->count(),
+            'recentOrders' => BakeryOrder::query()
+                ->with('cakeProduct:cake_product_id,cake_flavor,cake_size')
+                ->latest('created_at')
+                ->limit(5)
+                ->get(),
         ]);
     }
 }
